@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Emotion Assignment Quiz</title>
+<link rel="icon" type="image/jpg" href="Cover.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="style.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color:silver;
+}
+  .quiz-container {
+    width: 300px;
+    margin: 50px auto;
+    text-align: center;
+  }
+  .answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  button {
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color:white;
+    color: black;
+  }
+  .full-width {
+    grid-column: 1 / -1;
+  }
+</style>
+</head>
+
+<body>
+
+  <div class="hero-image">
+  <div class="hero-text">
+      <h1>Emotion Assignment Quiz</h1>
+      <h2>Answer the following questions to find your emotion and some activities!</h2>
+  </div>
+</div>
+
+
+<div class="text-block" style="text-align: left">
+  <h2>Welcome to My Emotion Assignment Quiz!</h2>
+    <p>Begin by answering the questions below to recieve an emotion based on your answers. Once you complete the quiz, you willb be taken to a screen that displays the emotion assigned to you as well as activities that are advised when feeling your assigned emotion. Warning, once you select an answer you cannot change it</a>.</p>
+</div>
+
+<div class="quiz-container">
+  <h2>What type of day are you having today?</h2>
+
+  <div class="answers">
+    <button data-emotion="happy">Good</button>
+    <button data-emotion="sad">Bad</button>
+    <button data-emotion="stressed">Rough</button>
+    <button data-emotion="angry">Annoying</button>
+    <button class="full-width" data-emotion="confused">I Don't Know</button>
+  </div>
+</div>
+
+<div class="quiz-container">
+  <h2>What type of weather would you like right now?</h2>
+
+  <div class="answers">
+    <button data-emotion="happy">Sunny</button>
+    <button data-emotion="angry">Cloudy</button>
+    <button data-emotion="sad">Rainy</button>
+    <button data-emotion="stressed">Thunderstorms</button>
+    <button class="full-width" data-emotion="confused">I Don't Know</button>
+  </div>
+</div>
+
+<div class="quiz-container">
+  <h2>Choose a color that reflects how you feel.</h2>
+
+  <div class="answers">
+    <button data-emotion="happy">Yellow</button>
+    <button data-emotion="sad">Blue</button>
+    <button data-emotion="angry">Red</button>
+    <button data-emotion="stressed">Black</button>
+    <button class="full-width" data-emotion="confused">White</button>
+  </div>
+</div>
+
+<div class="quiz-container">
+  <h2>Which of the following is most desirable to you?</h2>
+
+  <div class="answers">
+    <button data-emotion="angry">A Break</button>
+    <button data-emotion="sad">Nothing</button>
+    <button data-emotion="happy">A Sweet Treat</button>
+    <button data-emotion="stressed">A Distraction</button>
+    <button class="full-width" data-emotion="confused">I Don't Know</button>
+  </div>
+</div>
+
+<div class="quiz-container">
+  <h2>Someone calls you out of the blue, what do you do?</h2>
+
+  <div class="answers">
+    <button data-emotion="sad">Let It Ring</button>
+    <button data-emotion="happy">Answer It</button>
+    <button data-emotion="angry">Decline It</button>
+    <button data-emotion="stressed">Don't Notice It</button>
+    <button class="full-width" data-emotion="confused">I Don't Know</button>
+  </div>
+</div>
+
+<div id="tiebreaker" style="display:none;">
+  <h2>What emotion do you feel like most right now?</h2>
+
+  <button onclick="resolveTie('happy')">Happy</button>
+  <button onclick="resolveTie('sad')">Sad</button>
+  <button onclick="resolveTie('angry')">Angry</button>
+  <button onclick="resolveTie('stressed')">Stressed</button>
+  <button onclick="resolveTie('confused')">Confused</button>
+</div>
+
+<script>
+let happy = 0;
+let sad = 0;
+let angry = 0;
+let stressed = 0;
+let confused = 0;
+let questionsAnswered = 0;
+let tiedEmotions = [];
+
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    if (!button.closest(".answers")) return;
+    const emotion = button.getAttribute("data-emotion");
+
+    if (emotion === "happy") happy++;
+    if (emotion === "sad") sad++;
+    if (emotion === "angry") angry++;
+    if (emotion === "confused") confused++;
+    if (emotion === "stressed") stressed++;
+    console.log({ happy, sad, angry, confused, stressed});
+ 
+
+     const currentQuestion = button.closest(".answers");
+  const allButtons = currentQuestion.querySelectorAll("button");
+
+  allButtons.forEach(btn => {
+    btn.disabled = true;
+  });
+
+   questionsAnswered++;
+
+if (questionsAnswered === 5) {
+  showResult();
+}
+
+ });
+});
+
+
+function showResult() {
+
+let max = happy;
+let top = "happy";
+
+if (sad > max) {
+  max = sad; top = "sad";}
+if (angry > max) {
+  max = angry; top = "angry";}
+if (stressed > max) {
+  max = stressed; top = "stressed";}
+if (confused > max) {
+  max = confused; top = "confused";}
+
+let count = 0;
+
+if (happy === max) count++;
+if (sad === max) count++;
+if (angry === max) count++;
+if (stressed === max) count++;
+if (confused === max) count++;
+
+if (count > 1) {
+tiedEmotions = [];
+
+ if (happy === max) tiedEmotions.push("happy");
+ if (sad === max) tiedEmotions.push("sad");
+ if (angry === max) tiedEmotions.push("angry");
+ if (stressed === max) tiedEmotions.push("stressed");
+ if (confused === max) tiedEmotions.push("confused");
+
+document.querySelectorAll(".quiz-container").forEach(q => {
+    q.style.display = "none";
+  });
+
+ document.getElementById("tiebreaker").style.display = "block";
+}
+
+  else {
+  window.location.href = top + ".html";
+}
+
+}
+
+function resolveTie(choice) {
+  window.location.href = choice + ".html";
+}
+
+</script>
+
+  </body>
+     </html>
